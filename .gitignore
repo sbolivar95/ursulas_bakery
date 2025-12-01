@@ -1,0 +1,59 @@
+# -------------------------
+# Node / General
+# -------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables (VERY IMPORTANT)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Dist / Build output (Next.js + Express)
+.next/
+out/
+dist/
+build/
+tmp/
+temp/
+
+# Turbopack cache
+.turbo/
+
+# Express.js logs
+logs/
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage (from tests)
+coverage/
+
+# Prisma (if you're using it)
+prisma/migrations/*-shadow-database.sql
+
+# Local database files (if using SQLite or local DB)
+*.db
+*.sqlite
+*.sqlite-journal
+
+# Optional: Ignore Docker built artifacts
+docker-data/
+docker-volume/
