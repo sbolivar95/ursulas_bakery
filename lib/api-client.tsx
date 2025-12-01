@@ -5,6 +5,7 @@
 import { Category, CreateItem, ItemDetail, Unit } from '@/models/Item-model'
 import { Product, ProductDetailResponse } from '@/models/product.model'
 import { RecipeDetail, RecipeItemDetail } from '@/models/recipe.model'
+import { useAuth } from './auth-context'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 
@@ -13,7 +14,8 @@ function orgId(): string | null {
 }
 
 function userCode(): string | null {
-  return 'f91d82e0-8ac9-444b-9e70-241f901d34c5'
+  const { user } = useAuth()
+  return user!.id
 }
 
 function getAuthToken(): string | null {
@@ -64,7 +66,7 @@ async function apiCall<T>(
 // Items endpoints - matches items.routes.js
 export const itemsApi = {
   // GET /orgs/:orgId/get
-  list: () => apiCall<ItemDetail[]>('GET', `/items/${1}/items/get`),
+  list: () => apiCall<ItemDetail[]>('GET', `/items/${orgId()}/items/get`),
 
   // GET /items/:orgId/items/:itemId/get_by_id
   get: (itemId: string) =>

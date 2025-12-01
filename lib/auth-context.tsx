@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           fullName: data.user.fullName,
         })
         setOrganization(data.activeOrgId)
-        localStorage.setItem('organization', data.activeOrgId.id)
+        localStorage.setItem('organization', data.organization.id)
       } else {
         localStorage.removeItem('authToken')
         setToken(null)
@@ -112,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       setOrganization(data.activeOrgId)
       localStorage.setItem('authToken', data.token)
-      localStorage.setItem('organization', data.activeOrgId.id)
+      localStorage.setItem('organization', data.organization.id)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Login failed'
       setError(message)
@@ -150,7 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       setOrganization(data.organization)
       localStorage.setItem('authToken', data.token)
-      localStorage.setItem('organization', data.activeOrgId.id)
+      localStorage.setItem('organization', data.organization.id)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Registration failed'
       setError(message)

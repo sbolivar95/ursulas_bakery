@@ -1,16 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   UtensilsCrossed,
   Home,
   Package,
   BookOpen,
   Utensils,
+  LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import * as Tooltip from '@radix-ui/react-tooltip'
+import { useAuth } from '@/lib/auth-context'
 
 const navigation = [
   { href: '/dashboard', label: 'Dashboard', icon: Home, id: 'dash' },
@@ -25,7 +27,15 @@ const navigation = [
 ]
 
 export function Sidebar() {
+  const router = useRouter()
+  const logout = useAuth()
   const pathname = usePathname()
+  console.log(useAuth())
+
+  function handleLogout() {
+    logout
+    router.push('/login')
+  }
 
   return (
     <aside className='border-r border-sidebar-border bg-sidebar text-sidebar-foreground flex flex-col h-screen fixed left-0 top-0'>
@@ -79,6 +89,32 @@ export function Sidebar() {
             </Tooltip.Provider>
           )
         })}
+      </nav>
+
+      <nav className='flex px-3 py-6 space-y-2'>
+        <Tooltip.Provider delayDuration={100}>
+          <Tooltip.Root>
+            <Tooltip.Trigger asChild>
+              <button
+                className='flex items-end gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer'
+                onClick={() => handleLogout()}
+              >
+                <LogOut />
+              </button>
+            </Tooltip.Trigger>
+
+            <Tooltip.Portal>
+              <Tooltip.Content
+                side='right'
+                align='center'
+                className='rounded-md bg-black text-white px-2 py-1 text-xs shadow-md'
+              >
+                Log out
+                <Tooltip.Arrow className='fill-black' />
+              </Tooltip.Content>
+            </Tooltip.Portal>
+          </Tooltip.Root>
+        </Tooltip.Provider>
       </nav>
 
       {/* Footer

@@ -26,16 +26,16 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [itemsResponse, recipesResponse, productsResponse] =
-          await Promise.all([
-            itemsApi.list(),
-            recipesApi.list(),
-            productsApi.list(),
-          ])
+        // const [itemsResponse, recipesResponse, productsResponse] =
+        //   await Promise.all([
+        //     itemsApi.list(),
+        //     recipesApi.list(),
+        //     productsApi.list(),
+        //   ])
 
-        const items = itemsResponse || []
-        const recipes = recipesResponse || []
-        const products = productsResponse || []
+        const items: any[] = []
+        const recipes: any[] = []
+        const products: any[] = []
 
         // Calculate stats
         setStats({
