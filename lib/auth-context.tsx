@@ -38,7 +38,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/auth'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUserData = async (authToken: string) => {
     try {
-      const response = await fetch(`${API_URL}/me`, {
+      const response = await fetch(`${API_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch(`${API_URL}/register-owner`, {
+      const response = await fetch(`${API_URL}/auth/register-owner`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, fullName, organizationName }),
