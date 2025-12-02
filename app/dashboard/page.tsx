@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { DashboardLayout } from '@/components/dashboard-layout'
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
 import { ProtectedRoute } from '@/components/protected-route'
 
 import { itemsApi, recipesApi, productsApi } from '@/lib/api-client'
 import { TrendingUp, UtensilsCrossed, Package, Leaf } from 'lucide-react'
-import { KPICard } from '@/components/dashboard-kpi-card'
-import { DashboardChartSection } from '@/components/dashboard-chart-section'
-import { DashboardActivity } from '@/components/dashboard-activity'
+import { KPICard } from '@/components/dashboard/dashboard-kpi-card'
+import { DashboardChartSection } from '@/components/dashboard/dashboard-chart-section'
+import { DashboardActivity } from '@/components/dashboard/dashboard-activity'
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({

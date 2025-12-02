@@ -62,11 +62,11 @@ export function ItemDialog({
         const unitsData = await itemsApi.getUnits()
         setUnits(unitsData)
 
-        const categoryData = await itemsApi.getCategories()
+        const categoryData = await itemsApi.getCategories(organization!.id)
         setCategories(categoryData)
 
         if (mode === 'edit' && itemId && organization) {
-          const item = await itemsApi.get(itemId)
+          const item = await itemsApi.get(organization!.id, itemId)
           setItemData({ ...item, category_id: item.category_id ?? '' })
         }
 
@@ -114,9 +114,9 @@ export function ItemDialog({
     setLoading(true)
     try {
       if (mode === 'create') {
-        await itemsApi.create(itemData)
+        await itemsApi.create(organization!.id, itemData)
       } else if (itemId) {
-        await itemsApi.update(itemId, itemData)
+        await itemsApi.update(organization!.id, itemId, itemData)
       }
 
       // optional: refresh list behind the dialog

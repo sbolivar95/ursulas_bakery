@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { productsApi } from '@/lib/api-client'
 import { Button } from '@/components/ui/button'
 import { ProductDetailResponse } from '@/models/product.model'
+import { useAuth } from '@/lib/auth-context'
 
 interface ProductDetailProps {
   productId: string
@@ -24,6 +25,7 @@ const money = (value: number | null | undefined) =>
     : '-'
 
 export function ProductDetail({ productId }: ProductDetailProps) {
+  const { organization } = useAuth()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [product, setProduct] = useState<ProductDetailResponse | null>(null)
@@ -35,7 +37,7 @@ export function ProductDetail({ productId }: ProductDetailProps) {
       setLoading(true)
       setError(null)
       try {
-        const data = await productsApi.get(productId)
+        const data = await productsApi.get(organization!.id, productId)
         setProduct(data)
       } catch (err) {
         console.error('Failed to load product detail:', err)

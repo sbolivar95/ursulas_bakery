@@ -1,36 +1,39 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { RecipesList } from '@/components/recipes-list'
-import { DashboardLayout } from '@/components/dashboard-layout'
+import { RecipesList } from '@/components/recipes/recipes-list'
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
 import { Button } from '@/components/ui/button'
 import { ProtectedRoute } from '@/components/protected-route'
-import { RecipeFormDialog } from '@/components/recipe-form-dialog'
+import { RecipeFormDialog } from '@/components/recipes/recipe-form-dialog'
 import { recipesApi } from '@/lib/api-client'
 import { RecipeDetail } from '@/models/recipe.model'
+import { useAuth } from '@/lib/auth-context'
 
 export default function RecipesPage() {
+  const { organization, isLoading } = useAuth()
   const [recipes, setRecipes] = useState<RecipeDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const loadItems = async () => {
+  const loadRecipes = useCallback(async () => {
     try {
       setLoading(true)
-      const response = await recipesApi.list()
+      const response = await recipesApi.list(organization!.id)
       setRecipes(response)
-      console.log(response)
     } catch (error) {
       console.error('Failed to load recipes', error)
     } finally {
       setLoading(false)
     }
-  }
+  }, [organization])
 
   useEffect(() => {
-    loadItems()
-  }, [])
+    if (isLoading) return
+    if (!organization) return
+    loadRecipes()
+  }, [organization, isLoading, loadRecipes])
 
   return (
     <ProtectedRoute>
@@ -43,7 +46,7 @@ export default function RecipesPage() {
           <RecipesList
             recipes={recipes}
             loading={loading}
-            reloadRecipes={loadItems}
+            reloadRecipes={loadRecipes}
           />
         </div>
 
