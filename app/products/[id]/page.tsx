@@ -1,8 +1,8 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { ProductDetail } from '@/components/product-detail'
-import { DashboardLayout } from '@/components/dashboard-layout'
+import { ProductDetail } from '@/components/products/product-detail'
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
 
 export default function ProductDetailPage() {
   const params = useParams()

@@ -5,7 +5,7 @@ import { Package, Pencil } from 'lucide-react'
 import { Product } from '@/models/product.model'
 import { useState } from 'react'
 import { ProductFormDialog } from './product-form-dialog'
-import { ConfirmDeleteDialog } from './dialog/ConfirmDeleteDialog'
+import { ConfirmDeleteDialog } from '../dialog/ConfirmDeleteDialog'
 import { productsApi } from '@/lib/api-client'
 import Link from 'next/link'
 

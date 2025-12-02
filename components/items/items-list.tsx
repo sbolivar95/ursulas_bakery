@@ -3,10 +3,11 @@
 import { Card } from '@/components/ui/card'
 import { Edit } from 'lucide-react'
 import { itemsApi } from '@/lib/api-client'
-import { ConfirmDeleteDialog } from './dialog/ConfirmDeleteDialog'
+import { ConfirmDeleteDialog } from '../dialog/ConfirmDeleteDialog'
 import { ItemDialog } from './item-form'
 import { useState } from 'react'
 import { ItemDetail } from '@/models/Item-model'
+import { useAuth } from '@/lib/auth-context'
 
 interface ItemsListProps {
   items: ItemDetail[]
@@ -15,12 +16,13 @@ interface ItemsListProps {
 }
 
 export function ItemsList({ items, loading, reloadItems }: ItemsListProps) {
+  const { organization } = useAuth()
   const [editOpen, setEditOpen] = useState(false)
   const [editingItemId, setEditingItemId] = useState<string | null>(null)
 
   async function handleDelete(id: string) {
     try {
-      await itemsApi.delete(id)
+      await itemsApi.delete(organization!.id, id)
       await reloadItems()
     } catch (err) {
       console.error('Error deleting item:', err)

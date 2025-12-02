@@ -15,7 +15,7 @@ interface User {
 }
 
 interface Organization {
-  id: string
+  id: number
   name: string
 }
 
@@ -73,8 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email: data.user.email,
           fullName: data.user.fullName,
         })
-        setOrganization(data.activeOrgId)
-        localStorage.setItem('organization', data.organization.id)
+        setOrganization(data.organization)
       } else {
         localStorage.removeItem('authToken')
         setToken(null)
@@ -110,9 +109,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: data.user.email,
         fullName: data.user.fullName,
       })
-      setOrganization(data.activeOrgId)
+      setOrganization(data.organization)
       localStorage.setItem('authToken', data.token)
-      localStorage.setItem('organization', data.organization.id)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Login failed'
       setError(message)
@@ -150,7 +148,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       setOrganization(data.organization)
       localStorage.setItem('authToken', data.token)
-      localStorage.setItem('organization', data.organization.id)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Registration failed'
       setError(message)
@@ -166,7 +163,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(null)
     setError(null)
     localStorage.removeItem('authToken')
-    localStorage.removeItem('organization')
   }
 
   return (

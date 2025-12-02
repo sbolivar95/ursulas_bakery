@@ -7,7 +7,8 @@ import { RecipeDetail } from '@/models/recipe.model'
 import { useState } from 'react'
 import { RecipeFormDialog } from './recipe-form-dialog'
 import { recipesApi } from '@/lib/api-client'
-import { ConfirmDeleteDialog } from './dialog/ConfirmDeleteDialog'
+import { ConfirmDeleteDialog } from '../dialog/ConfirmDeleteDialog'
+import { useAuth } from '@/lib/auth-context'
 
 interface RecipesListProps {
   recipes: RecipeDetail[]
@@ -20,12 +21,13 @@ export function RecipesList({
   loading,
   reloadRecipes,
 }: RecipesListProps) {
+  const { organization } = useAuth()
   const [dialogFormOpen, setDialogFormOpen] = useState(false)
   const [recipeId, setRecipeId] = useState('')
 
   async function handleDelete(id: string) {
     try {
-      await recipesApi.delete(id)
+      await recipesApi.delete(organization!.id, id)
       await reloadRecipes()
     } catch (err) {
       console.error('Error deleting item:', err)

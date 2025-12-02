@@ -32,7 +32,7 @@ export function ProductFormDialog({
   productId,
 }: ProductFormDialogProps) {
   const router = useRouter()
-  const { organization } = useAuth()
+  const { organization, user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [allRecipes, setAllRecipes] = useState<any[]>([])
@@ -65,8 +65,8 @@ export function ProductFormDialog({
       try {
         // Load all recipes and items
         const [recipesData, itemsData] = await Promise.all([
-          recipesApi.list(),
-          itemsApi.list(),
+          recipesApi.list(organization!.id),
+          itemsApi.list(organization!.id),
         ])
 
         setAllRecipes(recipesData)
@@ -75,13 +75,14 @@ export function ProductFormDialog({
 
         // Load existing product if editing
         if (productId) {
-          const productData = await productsApi.get(productId)
+          const productData = await productsApi.get(organization!.id, productId)
           setProduct({
             name: productData.name,
             description: productData.description || '',
           })
           setRecipes(productData.recipes || [])
           setItems(productData.items || [])
+          console.log(productData)
         }
       } catch (error) {
         console.error('Failed to load data:', error)
@@ -175,7 +176,7 @@ export function ProductFormDialog({
     setSaving(true)
     try {
       if (productId) {
-        await productsApi.update(productId, {
+        await productsApi.update(organization!.id, productId, {
           name: product.name,
           description: product.description,
           recipes: recipes.map((r) => ({
@@ -188,7 +189,7 @@ export function ProductFormDialog({
           })),
         })
       } else {
-        await productsApi.create({
+        await productsApi.create(organization!.id, user!.id, {
           name: product.name,
           description: product.description,
           recipes: recipes.map((r) => ({

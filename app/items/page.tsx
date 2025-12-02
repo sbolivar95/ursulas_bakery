@@ -1,34 +1,41 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { ItemsList } from '@/components/items-list'
-import { DashboardLayout } from '@/components/dashboard-layout'
+import { useCallback, useEffect, useState } from 'react'
+import { ItemsList } from '@/components/items/items-list'
+import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
 import { Button } from '@/components/ui/button'
 import { ProtectedRoute } from '@/components/protected-route'
 import { itemsApi } from '@/lib/api-client'
-import { ItemDialog } from '@/components/item-form'
+import { ItemDialog } from '@/components/items/item-form'
 import { ItemDetail } from '@/models/Item-model'
+import { useAuth } from '@/lib/auth-context'
 
 export default function ItemsPage() {
+  const { organization, isLoading } = useAuth()
   const [items, setItems] = useState<ItemDetail[]>([])
   const [loading, setLoading] = useState(true)
   const [openCreate, setOpenCreate] = useState(false)
 
-  const loadItems = async () => {
+  const loadItems = useCallback(async () => {
+    if (!organization) return // safety
+
     try {
       setLoading(true)
-      const response = await itemsApi.list()
+      const response = await itemsApi.list(organization.id)
       setItems(response)
     } catch (error) {
       console.error('Failed to load items', error)
     } finally {
       setLoading(false)
     }
-  }
+  }, [organization])
 
   useEffect(() => {
+    if (isLoading) return
+    if (!organization) return
+
     loadItems()
-  }, [])
+  }, [organization, isLoading, loadItems])
 
   return (
     <ProtectedRoute>
